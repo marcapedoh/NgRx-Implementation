@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Movie } from './models/Movie';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,12 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'ngRx-test-app';
+  movies:Movie[]=[];
+  newMovie:Movie=new Movie();
+  constructor(){
+
+  }
+  addNewMovies():void{
+    
+  }
 }
