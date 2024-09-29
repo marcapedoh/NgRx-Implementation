@@ -1,5 +1,5 @@
 export class Movie{
-    id?:number;
+    id:number=1;
     name:string;
     earning:number;
     releaseDate:Date;

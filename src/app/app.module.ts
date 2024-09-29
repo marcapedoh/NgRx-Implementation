@@ -15,7 +15,11 @@ import { MovieListComponent } from './movie-list/movie-list.component';
 import { StoreModule } from '@ngrx/store';
 import { movieReducer } from './store/reducers/movie.reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-
+import { EffectsModule } from '@ngrx/effects';
+import {HttpClientModule} from '@angular/common/http'
+import { MovieEffects } from './store/effects/movie.effects';
+import { InMemoryService } from './service/in-memory.service';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,9 +35,12 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
     FormsModule,
     MatButtonModule,
     MatDividerModule,
+    HttpClientModule,
     MatCardModule,
-    StoreModule.forRoot({movies: movieReducer }),
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryService),
+    StoreModule.forRoot({ movies: movieReducer }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+    EffectsModule.forRoot([MovieEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]
