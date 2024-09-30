@@ -1,6 +1,6 @@
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { addMovies, addMoviesSuccess, addMoviesWithoutProps, getMovies, getMoviesFaillure, getMoviesSuccess } from "../actions/movie.action";
-import { catchError,concatMap,EmptyError, exhaustMap, map, of, tap } from "rxjs";
+import { addMovies, addMoviesSuccess, addMoviesWithoutProps, deleteMovie, deleteMovieSuccess, getMovies, getMoviesFaillure, getMoviesSuccess, updateMovie, updateMovieSuccess } from "../actions/movie.action";
+import { catchError,concatMap,EMPTY,EmptyError, exhaustMap, map, mergeMap, of, tap } from "rxjs";
 import { Injectable } from "@angular/core";
 import { DataService } from "src/app/service/data.service";
 import {  } from "rxjs";
@@ -13,7 +13,7 @@ export class MovieEffects{
         exhaustMap(()=>
         this.dataService.getMovies().pipe(
             map((movies)=> getMoviesSuccess(movies)),
-            catchError((error) => of(getMoviesFaillure({error})))
+            catchError(() => EMPTY)
         ))
     ))
 
@@ -28,7 +28,27 @@ export class MovieEffects{
         concatMap(({movie})=>
         this.dataService.addMovies(movie).pipe(
             map((newMovie)=>addMoviesSuccess(newMovie)),
-            catchError( (error) => of(getMoviesFaillure({error})))
+            catchError( () => EMPTY)
+        ))
+    ))
+
+    updateMovie$=createEffect(()=>
+    this.action$.pipe(
+        ofType(updateMovie),
+        concatMap(({movie})=>
+        this.dataService.updateMovies(movie).pipe(
+            map(()=>updateMovieSuccess(movie)),
+            catchError(()=> EMPTY)
+        ))
+    ))
+
+    deleteMovie$=createEffect(()=>
+    this.action$.pipe(
+        ofType(deleteMovie),
+        mergeMap(({movieId})=>
+        this.dataService.deleteMovie(movieId).pipe(
+            map(()=> deleteMovieSuccess(movieId)),
+            catchError(()=>EMPTY)
         ))
     ))
 
