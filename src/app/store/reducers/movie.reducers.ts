@@ -1,8 +1,10 @@
 import { createReducer, on } from "@ngrx/store";
 import { Movie } from "src/app/models/Movie";
 import {  addMoviesWithoutProps, deleteMovieSuccess, getMovies, getMoviesSuccess, updateMovieSuccess } from "../actions/movie.action";
+import { RouterReducerState } from "@ngrx/router-store";
 export interface MovieState{
     movies:ReadonlyArray<Movie>;
+    router:RouterReducerState<any>;
 }
 
 const initialState: ReadonlyArray<Movie> =[]

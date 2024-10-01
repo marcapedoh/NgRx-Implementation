@@ -20,10 +20,18 @@ import {HttpClientModule} from '@angular/common/http'
 import { MovieEffects } from './store/effects/movie.effects';
 import { InMemoryService } from './service/in-memory.service';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
+import { reducers,metaReducer } from './store/reducers'
+import { RouterSerializer } from './store/routerSerializer';
+import { MovieComponent } from './movie/movie.component';
+import { HomeComponent } from './home/home.component';
+import {MatIconModule} from '@angular/material/icon'
 @NgModule({
   declarations: [
     AppComponent,
-    MovieListComponent
+    MovieListComponent,
+    MovieComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -34,13 +42,18 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
     MatNativeDateModule,
     FormsModule,
     MatButtonModule,
+    MatIconModule,
     MatDividerModule,
     HttpClientModule,
     MatCardModule,
     HttpClientInMemoryWebApiModule.forRoot(InMemoryService),
-    StoreModule.forRoot({ movies: movieReducer }),
+    //StoreModule.forRoot({ movies: movieReducer }),
+    StoreModule.forRoot(reducers,{ metaReducers: metaReducer}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
-    EffectsModule.forRoot([MovieEffects])
+    EffectsModule.forRoot([MovieEffects]),
+    StoreRouterConnectingModule.forRoot({
+      serializer:RouterSerializer
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
